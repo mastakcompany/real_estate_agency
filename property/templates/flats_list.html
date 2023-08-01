@@ -1,4 +1,5 @@
 {% load l10n %}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -39,7 +40,9 @@
                             <p>город</p>
                             <div class="form-group">
                                 <select name="town" class="form-control">
-                                    <option {% ifequal town active_town %}selected {% endifequal %}value="">---</option>
+                                    <option {% ifequal town active_town %} selected
+                                    {% endifequal %} value="">---
+                                    </option>
                                     {% for town in towns %}
                                         <option {% ifequal town active_town %}selected {% endifequal %}value="{{ town }}">{{ town }}</option>
                                     {% endfor %}
