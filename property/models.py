@@ -6,8 +6,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class Flat(models.Model):
     owner = models.CharField('ФИО владельца', max_length=200)
-    owner_pure_phone = PhoneNumberField(blank=True, verbose_name='Нормализованный номер владельца')
     owners_phonenumber = models.CharField('Номер владельца', max_length=20)
+    owner_pure_phone = PhoneNumberField(blank=True, verbose_name='Нормализованный номер владельца')
     new_building = models.BooleanField(blank=True, null=True)
     created_at = models.DateTimeField(
         'Когда создано объявление',
@@ -62,3 +62,10 @@ class Complaint(models.Model):
     flat = models.ForeignKey(Flat, on_delete=models.CASCADE, related_name='complaints',
                              verbose_name='Квартира, на которую пожаловались')
     text_complaint = models.TextField(verbose_name='Текст жалобы')
+
+
+class Owner(models.Model):
+    name = models.CharField('ФИО владельца', max_length=200)
+    phonenumber = models.CharField('Номер владельца', max_length=20)
+    pure_phone = PhoneNumberField(blank=True, verbose_name='Нормализованный номер владельца')
+    flats = models.ManyToManyField(Flat, related_name='owner_flats', verbose_name='Квартиры в собственности')
