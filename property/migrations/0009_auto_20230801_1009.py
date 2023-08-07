@@ -5,18 +5,19 @@ from django.db import migrations
 
 def get_owners_pure_phones(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
+    flats = Flat.objects.all().iterator()
     
-    for flat in Flat.objects.all():
+    for flat in flats:
         try:
             owner_pure_phone = phonenumbers.parse(flat.owners_phonenumber, 'RU')
         except phonenumbers.NumberParseException:
-            flat.owner_pure_phone = 'Parsing owners_phonenumber error'
+            flat.owner_pure_phone = None
         else:
             if phonenumbers.is_possible_number(owner_pure_phone) and phonenumbers.is_valid_number(owner_pure_phone):
                 flat.owner_pure_phone = phonenumbers.format_number(owner_pure_phone,
                                                                    phonenumbers.PhoneNumberFormat.E164)
             else:
-                flat.owner_pure_phone = 'Impossible or invalid number'
+                flat.owner_pure_phone = None
         finally:
             flat.save()
 

@@ -6,8 +6,9 @@ from django.db import migrations
 def add_relation_flat_to_owner(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     Owner = apps.get_model('property', 'Owner')
+    owners = Owner.objects.all().iterator()
     
-    for owner in Owner.objects.all():
+    for owner in owners:
         flats_owned_by_this_owner = Flat.objects.filter(owner=owner.name)
         owner.flats.add(*flats_owned_by_this_owner)
         
